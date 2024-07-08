@@ -1,0 +1,9 @@
+.ReactCrop__crop-selection {
+    border: none;
+}
+
+.ReactCrop__drag-handle::after {
+    background-color: white;
+    width: 8px;
+    height: 8px;
+}
