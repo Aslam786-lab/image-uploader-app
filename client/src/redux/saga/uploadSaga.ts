@@ -25,7 +25,7 @@ function* uploadFile({ payload }: UploadFileParam): Generator<any, void, any> {
             try {
                 if(![STATUS_UPLOAD.large_file, STATUS_UPLOAD.unsupported].includes(file.status)) {
                     const response = yield call(() => axios({
-                        baseURL: 'http://localhost:5000',
+                        baseURL: 'https://image-uploader-app-server.vercel.app',
                         url: '/upload',
                         method: 'post',
                         data: formPayload,
@@ -65,7 +65,7 @@ function* setProfileImg(action): Generator<any, void, any>  {
   
     try {
       const response = yield call(() => axios({
-        baseURL: 'http://localhost:5000',
+        baseURL: 'https://image-uploader-app-server.vercel.app',
         url: '/profile-update',
         method: 'get',
         data: formPayload,
