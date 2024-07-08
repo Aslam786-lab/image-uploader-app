@@ -5,12 +5,13 @@ import { styles } from "../../styles";
 import UserDeatails from "./UserDeatails";
 import UploadImageModal from "../upload/UploadImageModal";
 import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store/configure-store";
 
 
 
 function UserProfile() {
   const [uploadImgModal, setUploadImgModal] = useState(false);
-  const { profileImg } = useSelector(state => state.profile);
+  const { profileImg } = useSelector((state:RootState) => state.profile);
 
   const toggleUploadImg = () => {
     setUploadImgModal(!uploadImgModal);

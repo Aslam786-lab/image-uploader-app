@@ -2,8 +2,12 @@ import axios from 'axios';
 import size from 'lodash/size';
 import { STATUS_UPLOAD } from '../constants';
 
+interface FileType {
+    size: number;
+    type: string;
+}
 
-export const modifyFiles = (existingFiles: object, files: Array<object>) => {
+export const modifyFiles = (existingFiles: object, files: Array<FileType>) => {
     let fileToUpload = {};
 
     for (let i = 0; i < files.length; i++) {

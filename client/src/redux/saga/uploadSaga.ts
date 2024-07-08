@@ -1,19 +1,23 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { call, delay, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { setUploadProgress, setUploadStatus, uploadFileReq } from "../slices/uploadSlice";
 import { store } from "../store/configure-store";
 import { STATUS_UPLOAD, TOASTER_ERROR, TOASTER_SUCCESS } from "../../constants";
 import { hideToaster, setProfileImgFailure, setProfileImgReq, setProfileImgSuccess, showToaster } from "../slices/profileSlice";
 
+interface CancelUpload {
+    token: any;
+}
+
 interface PayloadObj {
-    file: File,
-    cancelUpload: object,
-    id: number
-    status: string
+    file: File;
+    cancelUpload: CancelUpload;
+    id: number;
+    status: string;
 }
 
 interface UploadFileParam {
-    payload: Array<PayloadObj>
+    payload: Array<PayloadObj>;
 }
 
 function* uploadFile({ payload }: UploadFileParam): Generator<any, void, any> {
@@ -24,7 +28,7 @@ function* uploadFile({ payload }: UploadFileParam): Generator<any, void, any> {
 
             try {
                 if(![STATUS_UPLOAD.large_file, STATUS_UPLOAD.unsupported].includes(file.status)) {
-                    const response = yield call(() => axios({
+                    yield call(() => axios({
                         baseURL: 'https://image-uploader-app-server.vercel.app',
                         url: '/upload',
                         method: 'post',
@@ -32,13 +36,15 @@ function* uploadFile({ payload }: UploadFileParam): Generator<any, void, any> {
                         cancelToken: file.cancelUpload.token,
                         onUploadProgress: function(progress) {
                             const { loaded, total } = progress;
-                            const percentageProgress = Math.floor((loaded / total) * 100);
-                            store.dispatch(setUploadProgress({ id: file.id, progress: percentageProgress}));
-                            if(percentageProgress === 100) {
-                                store.dispatch(setUploadStatus({id: file.id, status: STATUS_UPLOAD.upload_done}))
-                                setTimeout(() => {
-                                    store.dispatch(setUploadStatus({id: file.id, status: STATUS_UPLOAD.upload_success}))
-                                },1000)
+                            if (total) {
+                                const percentageProgress = Math.floor((loaded / total) * 100);
+                                store.dispatch(setUploadProgress({ id: file.id, progress: percentageProgress}));
+                                if(percentageProgress === 100) {
+                                    store.dispatch(setUploadStatus({id: file.id, status: STATUS_UPLOAD.upload_done}));
+                                    setTimeout(() => {
+                                        store.dispatch(setUploadStatus({id: file.id, status: STATUS_UPLOAD.upload_success}));
+                                    }, 1000);
+                                }
                             }
                         }
                     }));
@@ -48,40 +54,41 @@ function* uploadFile({ payload }: UploadFileParam): Generator<any, void, any> {
                     console.log('cancelled by user');
                 }
 
-                if(error.message === 'Network Error' && !error?.response) {
-                    yield put(setUploadStatus({id: file.id, status: STATUS_UPLOAD.network_error}))
+                const err = error as AxiosError;
+
+                if(err.message === 'Network Error' && !err.response) {
+                    yield put(setUploadStatus({id: file.id, status: STATUS_UPLOAD.network_error}));
                 } 
                 
-                if(error?.response) {
-                    yield put(setUploadStatus({id: file.id, status: STATUS_UPLOAD.server_error}))
+                if(err.response) {
+                    yield put(setUploadStatus({id: file.id, status: STATUS_UPLOAD.server_error}));
                 }
             }
         }
     }
 }
 
-function* setProfileImg(action): Generator<any, void, any>  {
-    const formPayload = { imageUrl: action.payload };
+function* setProfileImg({payload}: {payload: string}): Generator<any, void, any> {
+    const formPayload = { imageUrl: payload };
   
     try {
-      const response = yield call(() => axios({
-        baseURL: 'https://image-uploader-app-server.vercel.app',
-        url: '/profile-update',
-        method: 'get',
-        data: formPayload,
-      }));
+        const response = yield call(() => axios({
+            baseURL: 'https://image-uploader-app-server.vercel.app',
+            url: '/profile-update',
+            method: 'post',
+            data: formPayload,
+        }));
   
-      yield put(setProfileImgSuccess(response.data.imageUrl));
-      yield put(showToaster(TOASTER_SUCCESS));
+        yield put(setProfileImgSuccess(response.data.imageUrl));
+        yield put(showToaster(TOASTER_SUCCESS));
     } catch (error) {
-      yield put(setProfileImgFailure(error.message));
-      yield put(showToaster(TOASTER_ERROR));
+        yield put(setProfileImgFailure((error as Error).message));
+        yield put(showToaster(TOASTER_ERROR));
     } finally {
-      yield delay(3000); 
-      yield put(hideToaster());
+        yield delay(3000); 
+        yield put(hideToaster());
     }
-  }
-  
+}
 
 export default function* uploadSaga() {
     yield takeEvery(uploadFileReq, uploadFile);

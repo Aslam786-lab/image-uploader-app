@@ -16,6 +16,7 @@ function UploadImages({selectedProfile}: UploadImagesProps) {
 
   useEffect(() => {
     const fileToUpload = toArray(fileProgress).filter(file =>    file.progress === 0)
+    // @ts-ignore
     dispatch(uploadFileReq(fileToUpload))
   },[uploadedFilesLen])
 

@@ -2,18 +2,25 @@ import { useState } from "react";
 import { CrossIcon } from "../icons";
 import ImageCropper from "./ImageCropper";
 import { useDispatch } from "react-redux";
-import { setProfileImg, setProfileImgReq } from "../../redux/slices/profileSlice";
+import { setProfileImgReq } from "../../redux/slices/profileSlice";
 import { styles } from "../../styles";
 
-function CropImageModal({ file, onClose, toggleUploadImg }) {
-  const [croppedImg, setCroppedImg] = useState(null);
+interface CropImageModalProps {
+  file: string;
+  onClose: () => void;
+  toggleUploadImg: () => void;
+}
+
+function CropImageModal({ file, onClose, toggleUploadImg }: CropImageModalProps) {
+  const [croppedImg, setCroppedImg] = useState('');
   const dispatch = useDispatch();
 
-  const onImageCropped = (croppedImgUrl) => {
+  const onImageCropped = (croppedImgUrl: string) => {
     setCroppedImg(croppedImgUrl)
   }
 
   const handleConfirm = () => {
+    // @ts-ignore
     dispatch(setProfileImgReq(croppedImg));
     onClose()
     toggleUploadImg()

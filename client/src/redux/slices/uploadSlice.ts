@@ -5,8 +5,11 @@ import { keyBy, toArray } from 'lodash';
 
 interface FileProgress {
     [key: string]: {
-        progress?: number;
-        status: string
+        progress: number;
+        status: string;
+        id: number;
+        file: File;
+        cancelUpload: any;
     };
 }
 
@@ -15,7 +18,9 @@ interface UploadState {
 }
 
 const initialState: UploadState = {
-    fileProgress: {}
+    fileProgress: {
+        
+    }
 };
 
 const uploadSlice = createSlice({
@@ -28,10 +33,11 @@ const uploadSlice = createSlice({
                 ...modifyFiles(state.fileProgress, action.payload),
             };
         },
+        // @ts-ignore
         uploadFileReq: (state, action: PayloadAction<any>) => {
         },
-        setUploadProgress: (state, action: PayloadAction<{ id: string, progress: number }>) => {
-            const { id, progress, status } = action.payload;
+        setUploadProgress: (state, action: PayloadAction<{ id: number, progress: number }>) => {
+            const { id, progress, } = action.payload;
             state.fileProgress[id] = {
                 ...state.fileProgress[id],
                 progress,

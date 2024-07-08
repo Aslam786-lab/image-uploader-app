@@ -12,7 +12,7 @@ import { ERORR_MESSAGE, STATUS_UPLOAD } from "../../constants";
 interface FileItem {
   cancelUpload: { cancel: (a:string) => void}
   file: File,
-  progress: number|string,
+  progress: number,
   id: number,
   status: string
 }
@@ -42,7 +42,7 @@ function UploadImagesItem({ fileItem, selectedProfile }: UploadImagesItemProps) 
     dispatch(deleteUploadImage(id));
   }
 
-  const handleSelect = (e) => {
+  const handleSelect = (e:any) => {
     selectedProfile(e.target.value)
   }
 

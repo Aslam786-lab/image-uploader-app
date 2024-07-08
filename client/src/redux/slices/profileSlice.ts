@@ -10,6 +10,7 @@ const profileSlice = createSlice({
     toasterType: null,
   },
   reducers: {
+    // @ts-ignore
     setProfileImgReq: (state, action) => {},
     setProfileImgSuccess: (state, action) => {
       state.profileImg = action.payload;

@@ -1,10 +1,24 @@
+// @ts-nocheck
 import  { useState } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import './ImageCropper.css'
 
+interface ImageCropperProps {
+  imageToCrop: string;
+  onImageCropped: (a: any) => void;
+}
 
-function ImageCropper({ imageToCrop, onImageCropped }) {
+interface Crop {
+  width: number;
+  height: number;
+  unit: string;
+  aspect: number;
+  x: number;
+  y: number;
+}
+
+function ImageCropper({ imageToCrop, onImageCropped }: ImageCropperProps) {
 
   const [cropConfig, setCropConfig] = useState(
     {
@@ -16,19 +30,18 @@ function ImageCropper({ imageToCrop, onImageCropped }) {
 
   const [imageRef, setImageRef] = useState();
 
-  async function cropImage(crop) {
+  async function cropImage(crop: Crop) {
     if (imageRef && crop.width && crop.height) {
       const croppedImage = await getCroppedImage(
         imageRef,
         crop,
-        "croppedImage" 
       );
       onImageCropped(croppedImage)
     }
   }
 
-  function getCroppedImage(sourceImage, cropConfig, fileName) {
-    const canvas = document.createElement("canvas");
+  function getCroppedImage(sourceImage: HTMLImageElement, cropConfig: Crop) {
+    const canvas: any = document.createElement("canvas");
     const scaleX = sourceImage.naturalWidth / sourceImage.width;
     const scaleY = sourceImage.naturalHeight / sourceImage.height;
     const diameter = Math.min(cropConfig.width, cropConfig.height);
@@ -57,13 +70,12 @@ function ImageCropper({ imageToCrop, onImageCropped }) {
     );
   
     return new Promise((resolve, reject) => {
-      canvas.toBlob((blob) => {
+      canvas.toBlob((blob: Blob | null) => {
         if (!blob) {
           reject(new Error("Canvas is empty"));
           return;
         }
   
-        blob.name = fileName;
         const croppedImageUrl = window.URL.createObjectURL(blob);
   
         resolve(croppedImageUrl);

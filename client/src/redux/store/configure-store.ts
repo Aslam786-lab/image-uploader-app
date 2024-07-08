@@ -5,7 +5,8 @@ import profileReducer from '../slices/profileSlice';
 import uploadSaga from '../saga/uploadSaga';
 
 const sagaMiddleWare = createSagaMiddleware();
-export const store = configureStore({
+
+export const store: any = configureStore({
     reducer: {
         upload: uploadReducer,
         profile: profileReducer

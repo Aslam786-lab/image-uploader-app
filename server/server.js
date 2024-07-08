@@ -10,9 +10,6 @@ app.use(express.json())
 
 app.use(cors())
 
-app.use('/', (req, res) => {
-    res.send({success: true})
-})
 
 app.post('/upload', upload.single('file'), (req, res) => {
     console.log('body', req.file.length, req.file)

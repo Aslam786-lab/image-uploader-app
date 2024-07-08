@@ -13,7 +13,9 @@ interface UploadImageModalProps {
     toggleUploadImg: () => void;
 }
 
-export const cropModalHandleContext = createContext();
+type HandleCropImageFunction = (file: File) => void;
+
+export const cropModalHandleContext = createContext<HandleCropImageFunction>(null!);
 
 function UploadImageModal({ toggleUploadImg  }: UploadImageModalProps ) {
     const { fileProgress }  = useSelector((state: RootState) => state.upload)
@@ -36,7 +38,7 @@ function UploadImageModal({ toggleUploadImg  }: UploadImageModalProps ) {
         setSelectedFile('');
     }
 
-    const handleCropImage = (file) => {
+    const handleCropImage = (file: File) => {
         setSelectedFile(URL.createObjectURL(file))
         setCropImageModal(true)
     }
