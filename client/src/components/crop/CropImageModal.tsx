@@ -37,7 +37,7 @@ function CropImageModal({ file, onClose, toggleUploadImg }: CropImageModalProps)
       <div className="bg-black flex justify-center">
         <ImageCropper imageToCrop={file} onImageCropped={onImageCropped}/>
       </div>
-      <div className='flex justify-between gap-3'>
+      <div className='flex justify-between gap-3 mt-4'>
         <button className={styles.cancelBtn} onClick={onClose}>Cancel</button>
         <button className={styles.selectBtn} onClick={handleConfirm}>Confirm</button>
       </div>

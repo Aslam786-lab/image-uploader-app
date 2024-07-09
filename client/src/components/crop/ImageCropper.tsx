@@ -93,7 +93,7 @@ function ImageCropper({ imageToCrop, onImageCropped }: ImageCropperProps) {
       onImageLoaded={(imageRef) => setImageRef(imageRef)}
       onComplete={(cropConfig) => cropImage(cropConfig)}
       onChange={(cropConfig) => setCropConfig(cropConfig)}
-      imageStyle={{ objectFit: "cover"}} 
+      imageStyle={{ objectFit: "cover", height: '290px', width: '300px'}} 
       crossorigin="anonymous"
     /> 
   );
