@@ -61,7 +61,7 @@ For responsive designs, refer to the attached Figma file [here](https://www.figm
 
 ### Vercel Deployment:
 
-Check out the live demo of the Image Uploader on Vercel [here](https://image-uploader.vercel.app/).
+Check out the live demo of the Image Uploader on Vercel [here](https://image-uploader-app-ten.vercel.app/).
 
 Feel free to contact us with any questions or feedback!
 
