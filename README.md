@@ -4,11 +4,9 @@
 
 This project aims to create a versatile and user-friendly image uploader app using React.js. It supports single and multiple image uploads with features like drag-and-drop functionality, image management (cropping, removal, selection), progress indicators for upload status, and API integration for fetching and saving avatar images.
 
-**User Profile:**
-![profile](https://github.com/Aslam786-lab/image-uploader-app/assets/54398424/4a63a4e2-5512-46e8-96fc-efc68c4ad239)
 
-**Crop Image:**
-![crop](https://github.com/Aslam786-lab/image-uploader-app/assets/54398424/ab44615d-0161-4173-980b-1abe7bc32263)
+<img src="https://github.com/Aslam786-lab/image-uploader-app/assets/54398424/4cb193e6-2ffd-4c34-8427-657ed050baf7" alt="1720501311549" width="400"/>
+
 
 ## Features
 
