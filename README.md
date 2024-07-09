@@ -43,7 +43,7 @@ To get started with the Image Uploader component:
 1. Clone this repository to your local machine.
 2. Navigate to the project directory `server` folder.
 3. Install dependencies using `npm install`.
-4. Start the development server with `npm run start`.
+4. Start the development server with `npm start`.
 5. Your server will be running at `http://localhost:5000`.
 
 ### Frontend Setup:
@@ -51,7 +51,7 @@ To get started with the Image Uploader component:
 1. Navigate to the project directory `client` folder.
 2. Install dependencies using `npm install`.
 3. Navigate to the `redux/saga/uploadSaga.ts` file and replace the `'https://image-uploader-app-server.vercel.app'` URL with `http://localhost:5000`.
-4. Start the development server with `npm run start`.
+4. Start the development server with `npm run dev`.
 5. Open your web browser and visit `http://localhost:3000` to view the application.
 
 
